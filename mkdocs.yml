@@ -1,0 +1,71 @@
+site_name: Contribute to TYPO3
+site_url: https://dkd-dobberkau.github.io/contribute-to-typo3/
+site_description: A getting-started guide for contributing to TYPO3 Core
+site_author: dkd-dobberkau
+
+repo_name: dkd-dobberkau/contribute-to-typo3
+repo_url: https://github.com/dkd-dobberkau/contribute-to-typo3
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: deep orange
+      accent: orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep orange
+      accent: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+    - content.code.annotate
+    - search.highlight
+    - search.suggest
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - tables
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Prerequisites: prerequisites.md
+    - Create Accounts: accounts.md
+  - Setup:
+    - Clone & Configure Git: clone-and-configure.md
+    - DDEV Environment: ddev-setup.md
+    - Install TYPO3: typo3-install.md
+  - Contributing:
+    - Contribution Workflow: contribution-workflow.md
+    - Review Process: review-process.md
+  - Help:
+    - Troubleshooting: troubleshooting.md
+    - Command Reference: reference.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/dkd-dobberkau/contribute-to-typo3
+    - icon: fontawesome/brands/slack
+      link: https://typo3.slack.com
