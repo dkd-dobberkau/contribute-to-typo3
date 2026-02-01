@@ -41,9 +41,17 @@ Already have the prerequisites? Run this in your TYPO3 clone:
 curl -sL https://dkd-dobberkau.github.io/contribute-to-typo3/install.sh | bash
 ```
 
+## Credits
+
+This guide is based on the [Official TYPO3 Contribution Guide](https://docs.typo3.org/core-contribution) maintained by the [TYPO3 Documentation Team](https://typo3.org/community/teams/documentation). Thank you to all contributors who make TYPO3 documentation excellent.
+
 ## Resources
 
 - [Official TYPO3 Contribution Guide](https://docs.typo3.org/core-contribution)
 - [TYPO3 Slack #typo3-cms-coredev](https://typo3.slack.com)
 - [Forge Issue Tracker](https://forge.typo3.org/projects/typo3cms-core/issues)
 - [Gerrit Code Review](https://review.typo3.org)
+
+---
+
+*TYPO3 is a registered trademark of the [TYPO3 Association](https://typo3.org/project/association). See [The Brand](https://typo3.com/typo3-cms/the-brand) for trademark guidelines.*
