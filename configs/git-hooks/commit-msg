@@ -1,0 +1,96 @@
+#!/bin/sh
+#
+# Gerrit commit-msg hook - adds Change-Id to commits
+# Source: https://gerrit-review.googlesource.com/Documentation/cmd-hook-commit-msg.html
+
+unset GREP_OPTIONS
+
+CHANGE_ID_AFTER="Bug|Depends-On|Issue|Resolves|Releases"
+
+add_ChangeId() {
+    clean_message=$(sed -e '
+        /^diff --git .*/{
+            s///
+            q
+        }
+        /^Signed-off-by:/d
+        /^#/d
+    ' "$MSG" | git stripspace)
+    if test -z "$clean_message"
+    then
+        return
+    fi
+
+    if grep -i '^Change-Id:' "$MSG" >/dev/null
+    then
+        return
+    fi
+
+    id=$(_gen_ChangeId)
+    T=$(git config core.commentChar 2>/dev/null || echo '#')
+
+    perl -e '
+        $MSG = shift;
+        $T = shift;
+        $id = shift;
+        $CHANGE_ID_AFTER = shift;
+
+        open(I, "<", $MSG); @message = <I>; close I;
+        open(O, ">", $MSG);
+
+        $blank = 0;
+        $last_change_id = 0;
+        foreach (@message) {
+            if (/^$T/) { next; }
+            if (/^$/) { $blank = 1; next; }
+            $last_change_id = $. if /^($CHANGE_ID_AFTER):/i;
+        }
+
+        $blank = 0;
+        $inserted = 0;
+        foreach (@message) {
+            if (!$inserted) {
+                if (/^($CHANGE_ID_AFTER):/i && $. >= $last_change_id) {
+                    print O "\n" if $blank;
+                    print O "Change-Id: I$id\n";
+                    $inserted = 1;
+                }
+                elsif (/^$T/) {
+                    print O "\n" if $blank;
+                    print O "Change-Id: I$id\n";
+                    $inserted = 1;
+                }
+                elsif (/^$/) {
+                    $blank = 1;
+                    next;
+                }
+            }
+            print O "\n" if $blank;
+            $blank = 0;
+            print O;
+        }
+
+        if (!$inserted) {
+            print O "\n" if $blank;
+            print O "Change-Id: I$id\n";
+        }
+    ' "$MSG" "$T" "$id" "$CHANGE_ID_AFTER"
+}
+
+_gen_ChangeId() {
+    (
+        echo "tree $(git write-tree)"
+        if parent=$(git rev-parse "HEAD^0" 2>/dev/null)
+        then
+            echo "parent $parent"
+        fi
+        echo "author $(git var GIT_AUTHOR_IDENT)"
+        echo "committer $(git var GIT_COMMITTER_IDENT)"
+        echo
+        printf '%s' "$clean_message"
+    ) | git hash-object -t commit --stdin
+}
+
+MSG="$1"
+
+add_ChangeId

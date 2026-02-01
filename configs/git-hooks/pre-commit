@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# Pre-commit hook for TYPO3 Core
+# Runs basic checks before allowing commit
+
+# Check for debugging statements
+if git diff --cached --name-only | xargs grep -l 'var_dump\|debug\|console\.log' 2>/dev/null; then
+    echo "Warning: Found debugging statements in staged files"
+fi
+
+exit 0
